@@ -3,46 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>08 QUESTÕES PRÁTICAS DE LABORATÓRIO – PHP</title>
+    <title>08 PRÁTICAS DE LABORATÓRIO – PHP</title>
 </head>
 <body>
 
 <?php
 
-$verdadeiro = true;
-$falso = false;
+define("PI", 3.14159);
 
-echo "Variáveis: verdadeiro = $verdadeiro, falso = $falso<br><br>";
+$raio = 5;
+$area = PI * $raio * $raio;
 
-echo "verdadeiro && falso: ";
-var_dump($verdadeiro && $falso);
-
-echo "verdadeiro && verdadeiro: ";
-var_dump($verdadeiro && $verdadeiro);
-
-echo "falso && falso: ";
-var_dump($falso && $falso);
-
-echo "<br>verdadeiro || falso: ";
-var_dump($verdadeiro || $falso);
-
-echo "verdadeiro || verdadeiro: ";
-var_dump($verdadeiro || $verdadeiro);
-
-echo "falso || falso: ";
-var_dump($falso || $falso);
-
-echo "<br>!verdadeiro: ";
-var_dump(!$verdadeiro);
-
-echo "!falso: ";
-var_dump(!$falso);
-
-echo "<br>!(verdadeiro && falso): ";
-var_dump(!($verdadeiro && $falso));
-
-echo "verdadeiro || (falso && verdadeiro): ";
-var_dump($verdadeiro || ($falso && $verdadeiro));
+echo "Raio do círculo: $raio<br>";
+echo "Valor de PI: " . PI . "<br>";
+echo "Área do círculo: $area<br>";
 
 ?>
 
