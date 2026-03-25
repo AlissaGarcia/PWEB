@@ -9,10 +9,18 @@
 <h1>Sistema de Classificação Acadêmica</h1>
 
 <form method="post">
-    <h3>Digite as notas dos 10 alunos:</h3>
+    <h2>Quantas Notas Deseja Inserir?</h2>
+    <input type="number" name="quantidade" min="1" max="100" required>
+    <button type="submit">Enviar</button>
+</form>
+
+<form method="post">
+
+    <h3>Digite as notas dos alunos:</h3>
 
     <?php
-    for ($i = 0; $i < 10; $i++) {
+    $quantidade = isset($_POST['quantidade']) ? $_POST['quantidade'] : 0;
+    for ($i = 0; $i < $quantidade; $i++) {
         echo "Aluno " . ($i+1) . ": ";
         echo "<input type='text' name='notas[]'><br><br>";
     }
