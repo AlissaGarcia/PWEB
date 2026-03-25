@@ -2,46 +2,42 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AcadSIS</title>
 </head>
 <body>
-    <h1>Sistema de Classificação Acadêmica</h1>
 
-     <?php
-     echo "Bem-vindo ao Sistema de Classificação Acadêmica!<br>";
-    
-    $nota = readline("Digite sua nota: ");
-    function verificarSituacao($nota) {
-    if ($nota >= 7) {
+<h1>Sistema de Classificação Acadêmica</h1>
+
+<form method="post">
+    <label>Digite a nota:</label><br>
+    <input>
+    <button type="submit">Verificar</button>
+</form>
+
+<?php
+
+function verificarSituacao($nota) {
+    if ($nota >= 7 && $nota <= 10) {
         return "Aluno Aprovado";
-    } elseif ($nota >= 5) {
+    } elseif ($nota >= 5 && $nota < 7) {
         return "Aluno de Recuperação";
-    } else {
+    } elseif ($nota <= 0) {
         return "Aluno Reprovado";
+    } else {
+        return "Nota inválida";
     }
 }
-    
-    $nota = isset($_GET['nota']) ? floatval($_GET['nota']) : 0;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nota = floatval($_POST['nota']);
     $situacao = verificarSituacao($nota);
 
+    echo "<h2>Resultado Final</h2>";
+    echo "<p><strong>Nota:</strong> $nota</p>";
+    echo "<p><strong>Situação:</strong> $situacao</p>";
+}
 
-    ?>
-
-    <h2>Resultado Final</h2>
-
-    <p><strong>Nota:</strong> <?php echo $nota; ?></p>
-    <p><strong>Situação:</strong> <?php echo $situacao; ?></p>
-
-    <h3>Notas de 0 até <?php echo $nota; ?>:</h3>
-    <ul>
-        <?php
-        for ($i = 0; $i <= $nota; $i++) {
-            echo "<li>$i</li>";
-        }
-        ?>
-    </ul>
-
+?>
 
 </body>
 </html>
