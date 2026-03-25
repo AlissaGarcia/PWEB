@@ -9,8 +9,15 @@
 <h1>Sistema de Classificação Acadêmica</h1>
 
 <form method="post">
-    <label>Digite a nota:</label><br>
-    <input>
+    <h3>Digite as notas dos 10 alunos:</h3>
+
+    <?php
+    for ($i = 0; $i < 10; $i++) {
+        echo "Aluno " . ($i+1) . ": ";
+        echo "<input type='text' name='notas[]'><br><br>";
+    }
+    ?>
+
     <button type="submit">Verificar</button>
 </form>
 
@@ -18,23 +25,28 @@
 
 function verificarSituacao($nota) {
     if ($nota >= 7 && $nota <= 10) {
-        return "Aluno Aprovado";
+        return "Aprovado";
     } elseif ($nota >= 5 && $nota < 7) {
-        return "Aluno de Recuperação";
-    } elseif ($nota <= 0) {
-        return "Aluno Reprovado";
+        return "Recuperação";
+    } elseif ($nota >= 0 && $nota < 5) {
+        return "Reprovado";
     } else {
-        return "Nota inválida";
+        return "Inválida";
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nota = floatval($_POST['nota']);
-    $situacao = verificarSituacao($nota);
+    $notas = $_POST['notas']; // vetor
 
     echo "<h2>Resultado Final</h2>";
-    echo "<p><strong>Nota:</strong> $nota</p>";
-    echo "<p><strong>Situação:</strong> $situacao</p>";
+
+    foreach ($notas as $index => $nota) {
+        $situacao = verificarSituacao($nota);
+
+        echo "Aluno " . ($index + 1) . "<br>";
+        echo "Nota: $nota <br>";
+        echo "Situação: $situacao <br><br>";
+    }
 }
 
 ?>
