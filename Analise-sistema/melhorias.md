@@ -1,0 +1,1 @@
+Problemas identificados e melhorias propostas
