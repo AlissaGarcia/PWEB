@@ -1,0 +1,14 @@
+# Dockerfile para Backend (PHP)
+FROM php:8.1-apache
+
+# Copiar arquivos do backend
+COPY backend/ /var/www/html/
+
+# Habilitar mod_rewrite se necessário
+RUN a2enmod rewrite
+
+# Definir permissões
+RUN chown -R www-data:www-data /var/www/html/
+
+# Expor porta 80
+EXPOSE 80
