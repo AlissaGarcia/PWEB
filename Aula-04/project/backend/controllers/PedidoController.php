@@ -26,7 +26,7 @@ class PedidoController {
     }
 
     public function criarPedido($data) {
-        $pedido = new Pedido(uniqid());
+        $pedido = new Pedido(uniqid(), $data['cliente'] ?? null, $data['telefone'] ?? null);
         foreach ($data['itens'] as $itemData) {
             $produto = ProdutoFactory::criarProduto($itemData['produto']);
             $item = new ItemPedido($produto, $itemData['quantidade']);
@@ -43,9 +43,13 @@ class PedidoController {
         return $pedido->toArray();
     }
 
-    public function deletarPedido($id) {
-        $this->repository->delete($id);
-        return ['message' => 'Pedido deletado'];
+    public function getProdutos() {
+        return [
+            ['id' => 1, 'nome' => 'Pastel', 'preco' => 5.00, 'categoria' => 'salgado'],
+            ['id' => 2, 'nome' => 'Caldo', 'preco' => 8.00, 'categoria' => 'salgado'],
+            ['id' => 3, 'nome' => 'Refrigerante', 'preco' => 4.00, 'categoria' => 'bebida'],
+            ['id' => 4, 'nome' => 'Suco', 'preco' => 3.00, 'categoria' => 'bebida']
+        ];
     }
 }
 

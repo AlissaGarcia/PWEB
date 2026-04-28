@@ -4,13 +4,17 @@ require_once 'ItemPedido.php';
 
 class Pedido {
     private $id;
+    private $cliente;
+    private $telefone;
     private $itens = [];
     private $total = 0;
     private $desconto = 0;
     private $taxa = 5.00; // taxa de entrega fixa
 
-    public function __construct($id) {
+    public function __construct($id, $cliente = null, $telefone = null) {
         $this->id = $id;
+        $this->cliente = $cliente;
+        $this->telefone = $telefone;
     }
 
     public function adicionarItem(ItemPedido $item) {
@@ -22,6 +26,8 @@ class Pedido {
     public function getTotal() { return $this->total; }
     public function getDesconto() { return $this->desconto; }
     public function getTaxa() { return $this->taxa; }
+    public function getCliente() { return $this->cliente; }
+    public function getTelefone() { return $this->telefone; }
 
     public function aplicarDesconto($desconto) {
         $this->desconto = $desconto;
@@ -47,6 +53,8 @@ class Pedido {
         }
         return [
             'id' => $this->id,
+            'cliente' => $this->cliente,
+            'telefone' => $this->telefone,
             'itens' => $itensArray,
             'subtotal' => array_sum(array_column($itensArray, 'subtotal')),
             'desconto' => $this->desconto,

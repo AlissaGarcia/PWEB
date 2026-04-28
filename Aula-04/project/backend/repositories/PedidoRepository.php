@@ -43,7 +43,7 @@ class PedidoRepository {
         if (file_exists($file)) {
             $data = json_decode(file_get_contents($file), true);
             foreach ($data as $pedidoData) {
-                $pedido = new Pedido($pedidoData['id']);
+                $pedido = new Pedido($pedidoData['id'], $pedidoData['cliente'] ?? null, $pedidoData['telefone'] ?? null);
                 // Reconstruir itens se necessário, mas para simplicidade, armazenar apenas dados
                 $this->pedidos[$pedido->getId()] = $pedido;
             }

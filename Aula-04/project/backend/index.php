@@ -12,7 +12,9 @@ $controller = new PedidoController();
 $method = $_SERVER['REQUEST_METHOD'];
 $path = $_SERVER['REQUEST_URI'];
 
-if ($method === 'GET' && strpos($path, '/pedidos') !== false) {
+if ($method === 'GET' && strpos($path, '/produtos') !== false) {
+    echo json_encode($controller->getProdutos());
+} elseif ($method === 'GET' && strpos($path, '/pedidos') !== false) {
     echo json_encode($controller->getPedidos());
 } elseif ($method === 'POST' && strpos($path, '/pedidos') !== false) {
     $data = json_decode(file_get_contents('php://input'), true);
