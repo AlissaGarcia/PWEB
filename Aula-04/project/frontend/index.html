@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pastelaria do Zé</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>🍴 Sistema de Pedidos</h1>
+
+  <div class="form">
+    <select id="produto">
+      <option value="pastel">Pastel</option>
+      <option value="caldo">Caldo</option>
+      <option value="refrigerante">Refrigerante</option>
+      <option value="suco">Suco</option>
+    </select>
+
+    <input type="number" id="qtd" placeholder="Quantidade" min="1">
+
+    <button id="btn-adicionar" type="button">Adicionar</button>
+    <button id="btn-finalizar" type="button">Finalizar Pedido</button>
+  </div>
+
+  <div class="lista">
+    <h2>Itens</h2>
+    <ul id="lista"></ul>
+  </div>
+
+  <div class="resumo" aria-live="polite">
+    <h2>Resumo do Pedido</h2>
+    <p>Subtotal: R$ <span id="subtotal">0,00</span></p>
+    <p>Desconto: R$ <span id="desconto">0,00</span></p>
+    <p>Taxa: R$ <span id="taxa">0,00</span></p>
+    <p class="total-final">Total final: R$ <span id="total-final">0,00</span></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
