@@ -18,6 +18,7 @@ class Pedido {
         $this->calcularTotal();
     }
 
+    public function getId() { return $this->id; }
     public function getItens() { return $this->itens; }
     public function getTotal() { return $this->total; }
     public function getDesconto() { return $this->desconto; }

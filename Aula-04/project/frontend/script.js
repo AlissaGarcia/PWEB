@@ -1,81 +1,125 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const API_URL = 'http://localhost:8000/pedidos';
     const produtoSelect = document.getElementById('produto');
     const qtdInput = document.getElementById('qtd');
     const btnAdicionar = document.getElementById('btn-adicionar');
     const btnFinalizar = document.getElementById('btn-finalizar');
+    const btnAtualizar = document.getElementById('btn-atualizar');
+
     const lista = document.getElementById('lista');
-    const subtotalSpan = document.getElementById('subtotal');
-    const descontoSpan = document.getElementById('desconto');
-    const taxaSpan = document.getElementById('taxa');
-    const totalSpan = document.getElementById('total-final');
+    const pedidosSalvos = document.getElementById('pedidos-salvos');
 
-    let itens = [];
-    let subtotal = 0;
-    let desconto = 0;
-    const taxa = 5.00;
+    const subtotalEl = document.getElementById('subtotal');
+    const descontoEl = document.getElementById('desconto');
+    const taxaEl = document.getElementById('taxa');
+    const totalEl = document.getElementById('total-final');
 
-    const atualizarResumo = () => {
-        subtotalSpan.textContent = subtotal.toFixed(2).replace('.', ',');
-        descontoSpan.textContent = desconto.toFixed(2).replace('.', ',');
-        taxaSpan.textContent = taxa.toFixed(2).replace('.', ',');
-        const total = subtotal - desconto + taxa;
-        totalSpan.textContent = total.toFixed(2).replace('.', ',');
+    const waCliente = document.getElementById('wa-cliente');
+    const waEstabelecimento = document.getElementById('wa-estabelecimento');
+
+    const TELEFONE_CLIENTE = '5511999999999';
+    const TELEFONE_ESTABELECIMENTO = '5511888888888';
+    const formatarMoeda = (valor) => `R$ ${Number(valor).toFixed(2).replace('.', ',')}`;
+
+    const state = {
+        itens: [],
+        resumo: { subtotal: 0, desconto: 0, taxa: 0, total: 0 }
+    };
+
+    const renderResumo = () => {
+        subtotalEl.textContent = formatarMoeda(state.resumo.subtotal);
+        descontoEl.textContent = formatarMoeda(state.resumo.desconto);
+        taxaEl.textContent = formatarMoeda(state.resumo.taxa);
+        totalEl.textContent = formatarMoeda(state.resumo.total);
+    };
+
+    const renderItens = () => {
+        lista.innerHTML = '';
+        state.itens.forEach((item) => {
+            const li = document.createElement('li');
+            li.textContent = `${item.produto} x${item.quantidade}`;
+            lista.appendChild(li);
+        });
+    };
+
+    const carregarPedidos = async () => {
+        pedidosSalvos.innerHTML = '<li>Carregando...</li>';
+        try {
+            const response = await fetch(API_URL);
+            const pedidos = await response.json();
+            pedidosSalvos.innerHTML = '';
+
+            if (!Array.isArray(pedidos) || pedidos.length === 0) {
+                pedidosSalvos.innerHTML = '<li>Nenhum pedido registrado.</li>';
+                return;
+            }
+
+            pedidos.forEach((pedido) => {
+                const li = document.createElement('li');
+                li.textContent = `#${pedido.id} - ${formatarMoeda(pedido.total)} (${pedido.itens.length} item(ns))`;
+                pedidosSalvos.appendChild(li);
+            });
+        } catch (error) {
+            pedidosSalvos.innerHTML = '<li>Erro ao carregar pedidos.</li>';
+            console.error(error);
+        }
+    };
+
+    const atualizarWhatsAppLinks = (pedido) => {
+        const mensagemCliente = `Pedido ${pedido.id} confirmado! Total: ${formatarMoeda(pedido.total)}.`;
+        const mensagemEstab = `Novo pedido recebido: #${pedido.id}. Total: ${formatarMoeda(pedido.total)}.`;
+
+        waCliente.href = `https://wa.me/${TELEFONE_CLIENTE}?text=${encodeURIComponent(mensagemCliente)}`;
+        waEstabelecimento.href = `https://wa.me/${TELEFONE_ESTABELECIMENTO}?text=${encodeURIComponent(mensagemEstab)}`;
     };
 
     btnAdicionar.addEventListener('click', () => {
         const produto = produtoSelect.value;
-        const qtd = parseInt(qtdInput.value);
-        if (!qtd || qtd < 1) return;
+        const quantidade = parseInt(qtdInput.value, 10);
 
-        const preco = getPreco(produto);
-        const itemSubtotal = preco * qtd;
-        subtotal += itemSubtotal;
+        if (!quantidade || quantidade < 1) {
+            alert('Informe uma quantidade válida.');
+            return;
+        }
 
-        itens.push({ produto, qtd, preco, subtotal: itemSubtotal });
-
-        const li = document.createElement('li');
-        li.textContent = `${produto} x${qtd} - R$ ${itemSubtotal.toFixed(2).replace('.', ',')}`;
-        lista.appendChild(li);
-
-        atualizarResumo();
+        state.itens.push({ produto, quantidade });
+        renderItens();
         qtdInput.value = '';
     });
 
     btnFinalizar.addEventListener('click', async () => {
-        if (itens.length === 0) return;
-
-        const pedido = {
-            itens: itens.map(item => ({ produto: item.produto, quantidade: item.qtd })),
-            desconto: desconto
-        };
+        if (state.itens.length === 0) {
+            alert('Adicione pelo menos um item.');
+            return;
+        }
 
         try {
-            const response = await fetch('http://localhost:8000/pedidos', {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(pedido)
+                body: JSON.stringify({ itens: state.itens, desconto: 0 })
             });
-            const data = await response.json();
-            alert(`Pedido criado! ID: ${data.id}`);
-            // Gerar link WhatsApp
-            const mensagem = `Pedido ${data.id} - Total: R$ ${data.total.toFixed(2).replace('.', ',')}`;
-            const linkCliente = `https://wa.me/5511999999999?text=${encodeURIComponent(mensagem)}`;
-            const linkEstabelecimento = `https://wa.me/5511888888888?text=${encodeURIComponent('Novo pedido: ' + mensagem)}`;
-            window.open(linkCliente, '_blank');
-            window.open(linkEstabelecimento, '_blank');
+
+            const pedidoCriado = await response.json();
+            state.resumo = {
+                subtotal: pedidoCriado.subtotal,
+                desconto: pedidoCriado.desconto,
+                taxa: pedidoCriado.taxa,
+                total: pedidoCriado.total
+            };
+
+            renderResumo();
+            atualizarWhatsAppLinks(pedidoCriado);
+            carregarPedidos();
+            alert(`Pedido #${pedidoCriado.id} finalizado com sucesso.`);
         } catch (error) {
-            console.error('Erro:', error);
+            console.error(error);
+            alert('Erro ao finalizar pedido.');
         }
     });
 
-    const getPreco = (produto) => {
-        const precos = {
-            pastel: 5.00,
-            caldo: 8.00,
-            refrigerante: 4.00,
-            suco: 3.00
-        };
-        return precos[produto] || 0;
-    };
-});
+    btnAtualizar.addEventListener('click', carregarPedidos);
 
+    renderResumo();
+    carregarPedidos();
+});

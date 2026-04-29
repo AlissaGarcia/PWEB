@@ -2,43 +2,66 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Pastelaria do Zé</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastelaria do Zé - Pedidos</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main class="container">
+    <header>
+      <h1>🍃 Sistema de Pedidos</h1>
+      <p class="subtitle">Delivery e envio por WhatsApp</p>
+    </header>
 
-<div class="container">
-  <h1>🍴 Sistema de Pedidos</h1>
+    <section class="card form-section">
+      <h2>Novo Pedido</h2>
+      <div class="form-grid">
+        <label for="produto">Produto</label>
+        <select id="produto">
+          <option value="pastel">Pastel</option>
+          <option value="caldo">Caldo</option>
+          <option value="refrigerante">Refrigerante</option>
+          <option value="suco">Suco</option>
+        </select>
 
-  <div class="form">
-    <select id="produto">
-      <option value="pastel">Pastel</option>
-      <option value="caldo">Caldo</option>
-      <option value="refrigerante">Refrigerante</option>
-      <option value="suco">Suco</option>
-    </select>
+        <label for="qtd">Quantidade</label>
+        <input type="number" id="qtd" placeholder="Ex.: 2" min="1">
+      </div>
+      <div class="actions">
+        <button id="btn-adicionar" type="button">Adicionar item</button>
+        <button id="btn-finalizar" type="button">Finalizar pedido</button>
+      </div>
+    </section>
 
-    <input type="number" id="qtd" placeholder="Quantidade" min="1">
+    <section class="card">
+      <h2>Itens do Pedido</h2>
+      <ul id="lista"></ul>
+    </section>
 
-    <button id="btn-adicionar" type="button">Adicionar</button>
-    <button id="btn-finalizar" type="button">Finalizar Pedido</button>
-  </div>
+    <section class="card resumo" aria-live="polite">
+      <h2>Resumo</h2>
+      <p>Subtotal: <strong id="subtotal">R$ 0,00</strong></p>
+      <p>Desconto: <strong id="desconto">R$ 0,00</strong></p>
+      <p>Taxa de entrega: <strong id="taxa">R$ 0,00</strong></p>
+      <p class="total-final">Total final: <strong id="total-final">R$ 0,00</strong></p>
+    </section>
 
-  <div class="lista">
-    <h2>Itens</h2>
-    <ul id="lista"></ul>
-  </div>
+    <section class="card whatsapp-card">
+      <h2>WhatsApp</h2>
+      <p>Após finalizar, os links serão gerados automaticamente:</p>
+      <div class="wa-links">
+        <a id="wa-cliente" href="#" target="_blank" rel="noopener">Enviar para cliente</a>
+        <a id="wa-estabelecimento" href="#" target="_blank" rel="noopener">Enviar para estabelecimento</a>
+      </div>
+    </section>
 
-  <div class="resumo" aria-live="polite">
-    <h2>Resumo do Pedido</h2>
-    <p>Subtotal: R$ <span id="subtotal">0,00</span></p>
-    <p>Desconto: R$ <span id="desconto">0,00</span></p>
-    <p>Taxa: R$ <span id="taxa">0,00</span></p>
-    <p class="total-final">Total final: R$ <span id="total-final">0,00</span></p>
-  </div>
-</div>
+    <section class="card">
+      <h2>Pedidos já registrados</h2>
+      <button id="btn-atualizar" type="button" class="secondary">Atualizar lista</button>
+      <ul id="pedidos-salvos"></ul>
+    </section>
+  </main>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>

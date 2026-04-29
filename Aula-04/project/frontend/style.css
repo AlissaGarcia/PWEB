@@ -1,61 +1,105 @@
+:root {
+  --green-900: #0c4f1f;
+  --green-700: #178a3d;
+  --green-500: #24b358;
+  --green-100: #e9f8ef;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(140deg, var(--green-100), #f7fff9);
+  color: var(--green-900);
 }
 
 .container {
-  width: 420px;
-  margin: auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 16px;
 }
 
-h1 {
+header {
   text-align: center;
+  margin-bottom: 18px;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
+.subtitle {
+  margin-top: -8px;
+  color: var(--green-700);
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid #c7ebd4;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px rgba(12, 79, 31, 0.08);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+select, input, button {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #9fd7b2;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: 10px;
 }
 
 button {
-  background: #28a745;
-  color: white;
+  background: var(--green-700);
+  color: var(--white);
   border: none;
-  padding: 10px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #218838;
-}
+button:hover { background: var(--green-500); }
+button.secondary { background: var(--green-900); }
 
-.lista ul {
+ul {
   list-style: none;
+  margin: 0;
   padding: 0;
 }
 
-.lista li {
-  background: #eee;
-  margin: 5px 0;
-  padding: 5px;
-}
-
-.resumo {
-  background: #fafafa;
-  border: 1px solid #ddd;
+li {
+  background: #f4fcf7;
+  border: 1px solid #dbf3e4;
   border-radius: 8px;
-  padding: 12px;
-  margin-top: 15px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
 }
 
-.resumo p {
-  margin: 6px 0;
+.resumo .total-final {
+  font-size: 20px;
+  color: var(--green-700);
 }
 
-.total-final {
-  font-weight: bold;
+.wa-links {
+  display: grid;
+  gap: 8px;
+}
+
+.wa-links a {
+  text-decoration: none;
+  background: var(--green-100);
+  color: var(--green-900);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #b9e7c9;
 }
