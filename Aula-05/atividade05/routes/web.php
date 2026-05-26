@@ -36,4 +36,10 @@ Route::get('/institucional/missao', function () {
     return view('missao');
 });
 
+Route::get('/empresa', [PaginaController::class, 'empresa']);
 
+Route::get('/servicos', [PaginaController::class, 'servicos']);
+
+Route::get('/portfolio', [PaginaController::class, 'portfolio']);
+
+Route::get('/blog', [PaginaController::class, 'blog']);
