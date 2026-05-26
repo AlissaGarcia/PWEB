@@ -27,3 +27,13 @@ Route::get('/curso/web', function () {
 Route::get('/sobre', function () {
     return view('sobre');
 });
+
+Route::get('/contato', function () {
+    return view('contato');
+});
+
+Route::get('/institucional/missao', function () {
+    return view('missao');
+});
+
+
